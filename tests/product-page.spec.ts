@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ProductPage } from './page-objects/ProductPage';
-import { CATALOGUE_CONFIG, SIZE_FILTERS_TESTS } from './test-data/products';
+import { CATALOGUE_CONFIG, EXPECTED_PRODUCTS, SIZE_FILTERS_TESTS } from './test-data/products';
 
 test.describe('Product Page POM tests', () => {
     let productPage: ProductPage;
@@ -37,6 +37,15 @@ test.describe('Product Page POM tests', () => {
             expect(firstFilterCount).toBeGreaterThan(0);
             expect(secondFilterCount).toBeGreaterThan(0);
             expect(firstFilterCount).toBeLessThan(secondFilterCount); //1 xs 2 s products - make dynamic from catalogue later
+        })
+
+        test('should display product info correctly', async ({ page }) => {
+            const visibleProducts = await productPage.getProductNames();
+
+            expect(visibleProducts.length).toBeGreaterThan(0);
+            const firstProduct = EXPECTED_PRODUCTS[0];
+            await expect(page.getByText(firstProduct.name)).toBeVisible();
+            await productPage.verifyPriceVisible(firstProduct.price); //validate against expected price also
         })
     });
 });
