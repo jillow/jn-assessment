@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ProductPage } from './page-objects/ProductPage';
-import { CATALOGUE_CONFIG, EXPECTED_PRODUCTS, SIZE_FILTERS_TESTS } from './test-data/products';
+import { CATALOGUE_CONFIG, EXPECTED_PRODUCTS, getProductsForSize } from './test-data/products';
 
 test.describe('Product Page POM tests', () => {
     let productPage: ProductPage;
@@ -18,25 +18,29 @@ test.describe('Product Page POM tests', () => {
         });
 
         test('should filter products by size correctly', async ({ page }) => {
-            const testCase = SIZE_FILTERS_TESTS[0]; // run all eventually
-            await productPage.filterBySize(testCase.size);
+            for(const size of CATALOGUE_CONFIG.SIZES) {
+                const expectedProducts = getProductsForSize(size);
+                const expectedProduct = expectedProducts[0];
 
-            const filteredCount = await productPage.getProductCount();
-            expect(filteredCount).toBeLessThan(CATALOGUE_CONFIG.EXPECTED_PRODUCT_COUNT);
-            expect(filteredCount).toBeGreaterThan(0);
-            await expect(page.getByText(testCase.expectedProducts[0])).toBeVisible();
+                await productPage.goto('/');
+                await productPage.filterBySize(size);
+                await expect(page.getByText(expectedProduct.name)).toBeVisible();
+                //check products found matches number items displayed
+            }
         });
 
         test('should handle multiple filter selections', async ({ page }) => {
-            await productPage.filterBySize(SIZE_FILTERS_TESTS[0].size);
-            const firstFilterCount = await productPage.getProductCount();
+            const sizeXs = CATALOGUE_CONFIG.SIZES[0];
+            const sizeXxl = CATALOGUE_CONFIG.SIZES[6];
+            const expectedXsProduct = getProductsForSize(sizeXs)[0];
+            const expectedXxlProduct = getProductsForSize(sizeXxl)[0];
 
-            await productPage.filterBySize(SIZE_FILTERS_TESTS[1].size);
-            const secondFilterCount = await productPage.getProductCount();
-
-            expect(firstFilterCount).toBeGreaterThan(0);
-            expect(secondFilterCount).toBeGreaterThan(0);
-            expect(firstFilterCount).toBeLessThan(secondFilterCount); //1 xs 2 s products - make dynamic from catalogue later
+            await productPage.goto('/');
+            await productPage.filterBySize(sizeXs);
+            await productPage.filterBySize(sizeXxl);
+            await expect(page.getByText(expectedXsProduct.name)).toBeVisible();
+            await expect(page.getByText(expectedXxlProduct.name)).toBeVisible();
+            //check products found matches number items displayed
         })
 
         test('should display product info correctly', async ({ page }) => {
