@@ -4,7 +4,11 @@ export const CATALOGUE_CONFIG = {
 
 export const SIZE_FILTERS_TESTS = [
     {
+        size: 'XS',
+        expectedProducts: ['Black Batman T-shirt']
+    },
+    {
         size: 'S',
-        expectedProducts: ['Black batman T-shirt', 'Blue Sweatshirt']
+        expectedProducts: ['Black Batman T-shirt', 'Blue Sweatshirt']
     }
 ] as const
