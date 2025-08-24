@@ -26,5 +26,17 @@ test.describe('Product Page POM tests', () => {
             expect(filteredCount).toBeGreaterThan(0);
             await expect(page.getByText(testCase.expectedProducts[0])).toBeVisible();
         });
+
+        test('should handle multiple filter selections', async ({ page }) => {
+            await productPage.filterBySize(SIZE_FILTERS_TESTS[0].size);
+            const firstFilterCount = await productPage.getProductCount();
+
+            await productPage.filterBySize(SIZE_FILTERS_TESTS[1].size);
+            const secondFilterCount = await productPage.getProductCount();
+
+            expect(firstFilterCount).toBeGreaterThan(0);
+            expect(secondFilterCount).toBeGreaterThan(0);
+            expect(firstFilterCount).toBeLessThan(secondFilterCount); //1 xs 2 s products - make dynamic from catalogue later
+        })
     });
 });
