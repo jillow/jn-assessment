@@ -1,5 +1,6 @@
 export const CATALOGUE_CONFIG = {
     EXPECTED_PRODUCT_COUNT: 16,
+    SIZES: ['XS', 'S', 'M', 'ML', 'L', 'XL', 'XXL']
 };
 
 export interface ProductData {
@@ -13,16 +14,44 @@ export const EXPECTED_PRODUCTS: ProductData[] = [
         name: 'Cropped Stay Groovy off white',
         price: 10.90,
         sizes: ['L', 'XL', 'XXL']
-    }
-];
-
-export const SIZE_FILTERS_TESTS = [
-    {
-        size: 'XS',
-        expectedProducts: ['Black Batman T-shirt']
     },
     {
-        size: 'S',
-        expectedProducts: ['Black Batman T-shirt', 'Blue Sweatshirt']
-    }
-] as const
+        name: 'Basic cactus White T-shirt',
+        price: 13.25,
+        sizes: ['ML', 'L']
+    },
+    {
+        name: 'Skater Black Sweatshirt',
+        price: 25.90,
+        sizes: ['XL']
+    },
+    {
+        name: 'Black Tule Oversized',
+        price: 13.25,
+        sizes: ['M', 'ML']
+    },
+    {
+        name: 'Black Batman T-shirt',
+        price: 10.90,
+        sizes: ['XS', 'S']
+    },
+    {
+        name: 'Blue T-Shirt',
+        price: 9.00,
+        sizes: ['L', 'XL']
+    },
+    {
+        name: 'Loose Black T-shirt',
+        price: 14.00,
+        sizes: ['L', 'XL', 'XXL']
+    },
+    {
+        name: 'Ringer Hall Pass',
+        price: 10.90,
+        sizes: ['L', 'XL', 'XXL']
+    },
+];
+
+export function getProductsForSize(size: string): ProductData[] {
+    return EXPECTED_PRODUCTS.filter(product => product.sizes.includes(size));
+}
