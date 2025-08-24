@@ -14,7 +14,7 @@ test.describe('Product Page POM tests', () => {
     test.describe('Product catalogue functionality', () => {
         test('should display correct product count on load', async ({ page }) => {
             const productCount = await productPage.getProductCount();
-            expect(productCount).toBe(16); //get this from config later
+            expect(productCount).toBe(CATALOGUE_CONFIG.EXPECTED_PRODUCT_COUNT); //get this from config later
         });
 
         test('should filter products by size correctly', async ({ page }) => {
