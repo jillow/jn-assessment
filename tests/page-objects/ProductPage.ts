@@ -19,4 +19,8 @@ export class ProductPage extends BasePage {
         const match = countText?.match(/(\d+) Product\(s\) found/);
         return match ? parseInt(match[1]) : 0;
     }
+
+    async filterBySize(size: string): Promise<void> {
+        await this.page.getByText(size, { exact: true}).click();
+    }
 }
