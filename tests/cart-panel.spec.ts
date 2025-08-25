@@ -69,4 +69,17 @@ test.describe('Cart panel functionality', () => {
 
         await cartPanel.verifySubtotal(cart.expectedSubtotal);
     });
+
+    test('should maintain cart state when close and reopened', async({ page }) => {
+        const cart = TEST_CARTS.SINGLE_ITEM;
+
+        await productPage.addProductToCartByIndex(0);
+        
+        await cartPanel.closeCart();
+        await cartPanel.openCart();
+
+        await cartPanel.verifyProductInCart(cart.product.name);
+        await cartPanel.verifyQuantityText(cart.quantity);
+        await cartPanel.verifySubtotal(cart.expectedSubtotal);
+    })
 })
