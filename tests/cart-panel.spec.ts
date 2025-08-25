@@ -55,6 +55,20 @@ test.describe('Cart panel functionality', () => {
         expect(updatedCartCount).toBe(cart.quantity - 1);
     });
 
+    test('should handle completely removing an item from cart correctly', async () => {
+        const cart = TEST_CARTS.SINGLE_ITEM;
+
+        await productPage.addProductToCartByIndex(0);
+        await cartPanel.verifyProductInCart(cart.product.name);
+        const initialItemCount = await cartPanel.getCartItemCount();
+        expect(initialItemCount).toBe(1);
+
+        await cartPanel.removeItemFromCart(0);
+
+        const finalItemCount = await cartPanel.getCartItemCount();
+        expect(finalItemCount).toBe(0);
+    });
+
     test('should handle increase quantity adjustment via add to cart button correctly', async() => {
         const cart = TEST_CARTS.DOUBLE_QUANTITY;
 
