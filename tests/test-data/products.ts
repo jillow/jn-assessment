@@ -61,9 +61,16 @@ export const TEST_CARTS = {
         product: EXPECTED_PRODUCTS[0],
         expectedSubtotal: 10.90
     },
-    DOUBLE_ITEM: {
+    DOUBLE_QUANTITY: {
         product: EXPECTED_PRODUCTS[0],
         quantity: 2,
         expectedSubtotal: 21.80
+    },
+    DOUBLE_ITEM_DOUBLE_QUANTITY: {
+        items: [
+            { product: EXPECTED_PRODUCTS[0], quantity: 2},
+            { product: EXPECTED_PRODUCTS[1], quantity: 2}
+        ],
+        expectedSubtotal: 48.30
     } 
 } as const
