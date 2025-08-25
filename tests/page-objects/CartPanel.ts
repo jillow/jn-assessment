@@ -49,10 +49,7 @@ export class CartPanel extends BasePage {
      * Click the checkout button
      */
     async proceedToCheckout() {
-        if (!await this.isCartOpen()) {
-            await this.openCart();
-        }
-
+        await this.ensureCartIsOpen();
         await this.checkoutButton.click();
     }
 
@@ -61,10 +58,7 @@ export class CartPanel extends BasePage {
      * @param productName the product name to verify is in the cart
      */
     async verifyProductInCart(productName: string) {
-        if (!await this.isCartOpen()) {
-            await this.openCart();
-        }
-
+        await this.ensureCartIsOpen();
         await expect(this.cartPanel.getByText(productName).first()).toBeVisible();
     }
 
@@ -73,10 +67,7 @@ export class CartPanel extends BasePage {
      * @param expectedQuantity the quantity to verify of product to verify in the cart
      */
     async verifyQuantityText(expectedQuantity: number) {
-        if (!await this.isCartOpen()) {
-            await this.openCart();
-        }
-
+        await this.ensureCartIsOpen();
         await expect(this.cartPanel.getByText(`Quantity: ${expectedQuantity}`)).toBeVisible();
     }
 
@@ -85,9 +76,7 @@ export class CartPanel extends BasePage {
      * @param expectedSubtotal the cart subtotal to verify against
      */
     async verifySubtotal(expectedSubtotal: number) {
-        if (!await this.isCartOpen()) {
-            await this.openCart();
-        }
+        await this.ensureCartIsOpen();
         
         const subTotalStr = expectedSubtotal.toString();
         const [dollars, cents] = subTotalStr.split('.');
@@ -119,9 +108,7 @@ export class CartPanel extends BasePage {
      * @param productIndex the index of the item to increase the quantity of
      */
     async increaseItemQuantity(productIndex: number) {
-        if(!await this.isCartOpen()) {
-            await this.openCart();
-        }
+        await this.ensureCartIsOpen();
 
         const increaseQuantityButton = this.cartPanel.getByRole('button', { name: '+'}).nth(productIndex);
         await expect(increaseQuantityButton).toBeVisible();
@@ -133,9 +120,7 @@ export class CartPanel extends BasePage {
      * @param productIndex the index of the item to decrease the quantity of
      */
     async decreaseItemQuantity(productIndex: number) {
-        if(!await this.isCartOpen()) {
-            await this.openCart();
-        }
+        await this.ensureCartIsOpen();
 
         const decreaseQuantityButton = this.cartPanel.getByRole('button', { name: '-'}).nth(productIndex);
         await expect(decreaseQuantityButton).toBeVisible();
@@ -147,11 +132,18 @@ export class CartPanel extends BasePage {
      * @returns the number of unique items in the cart
      */
     async getUniqueItemCount(): Promise<number> {
-        if(!await this.isCartOpen()) {
-            await this.openCart();
-        }
+        await this.ensureCartIsOpen();
 
         const removeButtons = this.cartPanel.getByRole('button', { name: 'remove product from cart' });
         return await removeButtons.count();
+    }
+
+    /**
+     * Ensures the cart panel is in the 'open' state
+     */
+    private async ensureCartIsOpen(): Promise<void> {
+        if(!await this.isCartOpen()) {
+            await this.openCart();
+        }
     }
 }
