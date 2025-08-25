@@ -25,19 +25,37 @@ test.describe('Cart panel functionality', () => {
         expect(cartCount).toBe(1);
     });
 
-    test('should handle quantity adjustment via cart panel correctly', async({ page }) =>  {
+    test('should handle increase quantity adjustment via cart panel correctly', async({ page }) =>  {
         const cart = TEST_CARTS.DOUBLE_QUANTITY;
         
         await productPage.addProductToCartByIndex(0);
         await cartPanel.increaseItemQuantity(0);
         
-        await cartPanel.verifyQuantityText(cart.quantity)
+        await cartPanel.verifyQuantityText(cart.quantity);
         await cartPanel.verifySubtotal(cart.expectedSubtotal);
         const cartCount = await cartPanel.getCartItemCount();
         expect(cartCount).toBe(cart.quantity);
     });
 
-    test('should handle quantity adjustment via add to cart button correctly', async({ page }) => {
+    test('should handle decrease quantity adjustment correctly', async ({ page }) => {
+        const cart = TEST_CARTS.DOUBLE_QUANTITY;
+
+        await productPage.addProductToCartByIndex(0);
+        await cartPanel.increaseItemQuantity(0);
+
+        await cartPanel.verifyQuantityText(cart.quantity);
+        const cartCount = await cartPanel.getCartItemCount();
+        expect(cartCount).toBe(cart.quantity);
+
+        await cartPanel.decreaseItemQuantity(0);
+
+        await cartPanel.verifyQuantityText(cart.quantity - 1);
+        await cartPanel.verifySubtotal(cart.expectedSubtotal / 2);
+        const updatedCartCount = await cartPanel.getCartItemCount();
+        expect(updatedCartCount).toBe(cart.quantity - 1);
+    });
+
+    test('should handle increase quantity adjustment via add to cart button correctly', async({ page }) => {
         const cart = TEST_CARTS.DOUBLE_QUANTITY;
 
         await productPage.addProductToCartByIndex(0);
