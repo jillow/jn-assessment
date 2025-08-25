@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:product-page": "playwright test tests/product-page.spec.ts",
+    "test:cart-panel": "playwright test tests/cart-panel.spec.ts",
+    "test:repo-access": "playwright test tests/repository-access.spec.ts",
+    "test:install": "playwright install && playwright install-deps"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jillow/jn-assessment.git"
