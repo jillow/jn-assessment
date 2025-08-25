@@ -12,7 +12,7 @@ test.describe('Test that website repository is valid and publicly accessible', (
         await productPage.goto('/');
     })
 
-    test('verify github repo is publically accessible, can be cloned and has README.md at root', async ({ page }) => {
+    test('verify github repo is publically accessible, can be cloned and has README.md at root', async () => {
         const repoUrl = await repoAccess.getRepoUrl();
         await repoAccess.verifyUrlValid(repoUrl);
 

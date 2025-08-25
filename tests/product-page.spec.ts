@@ -12,7 +12,7 @@ test.describe('Product Page POM tests', () => {
     })
 
     test.describe('Product catalogue functionality', () => {
-        test('should display correct product count on load', async ({ page }) => {
+        test('should display correct product count on load', async () => {
             const productCount = await productPage.getProductCount();
             expect(productCount).toBe(CATALOGUE_CONFIG.EXPECTED_PRODUCT_COUNT);
         });
