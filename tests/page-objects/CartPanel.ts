@@ -94,6 +94,16 @@ export class CartPanel extends BasePage {
         await increaseQuantityButton.click();
     }
 
+    async decreaseItemQuantity(productIndex: number) {
+        if(!await this.isCartOpen()) {
+            await this.openCart();
+        }
+
+        const decreaseQuantityButton = this.cartPanel.getByRole('button', { name: '-'}).nth(productIndex);
+        await expect(decreaseQuantityButton).toBeVisible();
+        await decreaseQuantityButton.click();
+    }
+
     async getUniqueItemCount(): Promise<number> {
         if(!await this.isCartOpen()) {
             await this.openCart();
