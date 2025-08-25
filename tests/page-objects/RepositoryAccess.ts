@@ -17,6 +17,10 @@ export class RepositoryAccess extends BasePage {
         this.gitHubButton = this.page.locator('a[href*="github.com"]').first();
     }
 
+    /**
+     * Gets the website GitHub repo url from the github button
+     * @returns the url of the repo the website is hosted in
+     */
     async getRepoUrl(): Promise<string> {
         const url = await this.gitHubButton.getAttribute('href');
         
@@ -27,11 +31,20 @@ export class RepositoryAccess extends BasePage {
         return url;
     }
 
+    /**
+     * Checks that the supplied URL is returning a 200 response
+     * @param url the url to check is valid (response 200)
+     */
     async verifyUrlValid(url: string): Promise<void> {
         const response = await this.page.request.get(url);
         expect(response.status()).toBe(200);
     }
 
+    /**
+     * Clones the repository at a specificed url
+     * @param url the repsotiory url to clone
+     * @returns the directory the repository was cloned to
+     */
     async cloneRepository(url: string): Promise<string> {
         const tempDir = await this.createTempDirectory();
         const cloneDir = path.join(tempDir, 'cloned-repo');
@@ -50,12 +63,20 @@ export class RepositoryAccess extends BasePage {
         }
     }
 
+    /**
+     * Creates a temporary directory in the file system
+     * @returns temporary directory path
+     */
     private async createTempDirectory(): Promise<string> {
         const tempDir = path.join(os.tmpdir(), `playwright-repo-test-${Date.now()}`);
         fs.mkdirSync(tempDir, { recursive: true });
         return tempDir;
     }
 
+    /**
+     * Deletes a directory and all of its contents
+     * @param dirPath the filepath of the directory to clean up
+     */
     async cleanupDirectory(dirPath: string): Promise<void> {
         if(fs.existsSync(dirPath)) {
             try {
@@ -66,6 +87,10 @@ export class RepositoryAccess extends BasePage {
         }
     }
 
+    /**
+     * Verifies that the README.md file exists at the specified filepath
+     * @param dirPath the directory filepath to check
+     */
     async verifyReadmeExists(dirPath: string): Promise<void> {
         const readmePath = path.join(dirPath, 'README.md');
 
