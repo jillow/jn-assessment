@@ -16,6 +16,11 @@ export class ProductPage extends BasePage {
 
     async goto(url: string): Promise<void> {
         await super.goto(url);
+        await this.waitForProductsToLoad();
+    }
+
+    async waitForProductsToLoad(): Promise<void> {
+        await this.waitForElement(this.addToCartButtons.first());
     }
 
     async getProductCount(): Promise<number> {
