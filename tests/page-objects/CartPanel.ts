@@ -99,7 +99,7 @@ export class CartPanel extends BasePage {
                 }
             }
             
-            console.warn('Failed to get cart count');
+            console.warn('0 products detected in cart, is this expected?');
             return 0;
     }
 
@@ -125,6 +125,18 @@ export class CartPanel extends BasePage {
         const decreaseQuantityButton = this.cartPanel.getByRole('button', { name: '-'}).nth(productIndex);
         await expect(decreaseQuantityButton).toBeVisible();
         await decreaseQuantityButton.click();
+    }
+
+    /**
+     * Removes a specified item currently in the cart
+     * @param productIndex the index of the item to remove from the cart
+     */
+    async removeItemFromCart(productIndex: number) {
+        await this.ensureCartIsOpen();
+
+        const removeButton = this.cartPanel.getByRole('button', { name: 'remove product from cart'}).first();
+        await this.waitForElement(removeButton);
+        await removeButton.click();
     }
 
     /**
