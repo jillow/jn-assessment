@@ -6,6 +6,7 @@ export class CartPanel extends BasePage {
     readonly openCartButton: Locator;
     readonly closeCartButton: Locator;
     readonly subtotalPanel: Locator;
+    readonly checkoutButton: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -14,6 +15,7 @@ export class CartPanel extends BasePage {
         this.subtotalPanel = this.cartPanel.locator('div:has(*:text-is("SUBTOTAL"))');
         this.openCartButton = this.page.locator('button:has([title="Products in cart quantity"])');
         this.closeCartButton = this.page.getByRole('button', { name: 'X'});
+        this.checkoutButton = this.cartPanel.getByRole('button', { name: 'CHECKOUT'});
     }
 
     async openCart(): Promise<void> {
@@ -30,6 +32,14 @@ export class CartPanel extends BasePage {
 
     async isCartOpen(): Promise<boolean> {
         return await this.cartPanel.getByText('SUBTOTAL').isVisible();
+    }
+
+    async proceedToCheckout() {
+        if (!await this.isCartOpen()) {
+            await this.openCart();
+        }
+
+        await this.checkoutButton.click();
     }
 
     async verifyProductInCart(productName: string) {
