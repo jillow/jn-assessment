@@ -23,5 +23,17 @@ test.describe('Cart panel functionality', () => {
         await cartPanel.verifySubtotal(cart.expectedSubtotal);
         const cartCount = await cartPanel.getCartItemCount();
         expect(cartCount).toBe(1);
-    })
+    });
+
+    test('should handle quantity adjustments correctly', async({ page }) =>  {
+        const cart = TEST_CARTS.DOUBLE_ITEM;
+        
+        await productPage.addProductToCartByIndex(0);
+        await cartPanel.increaseItemQuantity(0);
+        
+        await cartPanel.verifyQuantityText(cart.quantity)
+        await cartPanel.verifySubtotal(cart.expectedSubtotal);
+        const cartCount = await cartPanel.getCartItemCount();
+        expect(cartCount).toBe(cart.quantity);
+    });
 })
