@@ -25,7 +25,7 @@ test.describe('Cart panel functionality', () => {
         expect(cartCount).toBe(1);
     });
 
-    test('should handle quantity adjustments correctly', async({ page }) =>  {
+    test('should handle quantity adjustment via cart panel correctly', async({ page }) =>  {
         const cart = TEST_CARTS.DOUBLE_ITEM;
         
         await productPage.addProductToCartByIndex(0);
@@ -36,4 +36,16 @@ test.describe('Cart panel functionality', () => {
         const cartCount = await cartPanel.getCartItemCount();
         expect(cartCount).toBe(cart.quantity);
     });
+
+    test('should handle quantity adjustment via add to cart button correctly', async({ page }) => {
+        const cart = TEST_CARTS.DOUBLE_ITEM;
+
+        await productPage.addProductToCartByIndex(0);
+        await productPage.addProductToCartByIndex(0);
+
+        await cartPanel.verifyQuantityText(cart.quantity)
+        await cartPanel.verifySubtotal(cart.expectedSubtotal);
+        const cartCount = await cartPanel.getCartItemCount();
+        expect(cartCount).toBe(cart.quantity);
+    })
 })
