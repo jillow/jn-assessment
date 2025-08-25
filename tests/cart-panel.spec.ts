@@ -26,7 +26,7 @@ test.describe('Cart panel functionality', () => {
     });
 
     test('should handle quantity adjustment via cart panel correctly', async({ page }) =>  {
-        const cart = TEST_CARTS.DOUBLE_ITEM;
+        const cart = TEST_CARTS.DOUBLE_QUANTITY;
         
         await productPage.addProductToCartByIndex(0);
         await cartPanel.increaseItemQuantity(0);
@@ -38,7 +38,7 @@ test.describe('Cart panel functionality', () => {
     });
 
     test('should handle quantity adjustment via add to cart button correctly', async({ page }) => {
-        const cart = TEST_CARTS.DOUBLE_ITEM;
+        const cart = TEST_CARTS.DOUBLE_QUANTITY;
 
         await productPage.addProductToCartByIndex(0);
         await productPage.addProductToCartByIndex(0);
@@ -57,5 +57,16 @@ test.describe('Cart panel functionality', () => {
         await cartPanel.verifyProductInCart(EXPECTED_PRODUCTS[1].name);
         const productCount = await cartPanel.getUniqueItemCount();
         expect(productCount).toBe(2);
+    });
+
+    test('should calculate subtotal with multiple different items correctly', async({ page }) => {
+        const cart = TEST_CARTS.DOUBLE_ITEM_DOUBLE_QUANTITY;
+
+        await productPage.addProductToCartByIndex(0);
+        await productPage.addProductToCartByIndex(1);
+        await cartPanel.increaseItemQuantity(0);
+        await cartPanel.increaseItemQuantity(1);
+
+        await cartPanel.verifySubtotal(cart.expectedSubtotal);
     });
 })
