@@ -41,7 +41,7 @@ test.describe('Product Page POM tests', () => {
             await expect(page.getByText(expectedXsProduct.name)).toBeVisible();
             await expect(page.getByText(expectedXxlProduct.name)).toBeVisible();
             //check products found matches number items displayed
-        })
+        });
 
         test('should display product info correctly', async ({ page }) => {
             const visibleProducts = await productPage.getProductNames();
@@ -49,7 +49,7 @@ test.describe('Product Page POM tests', () => {
             expect(visibleProducts.length).toBeGreaterThan(0);
             const firstProduct = EXPECTED_PRODUCTS[0];
             await expect(page.getByText(firstProduct.name)).toBeVisible();
-            await productPage.verifyPriceVisible(firstProduct.price); //validate against expected price also
-        })
+            await productPage.verifyPriceVisible(firstProduct.price);
+        });
     });
 });
