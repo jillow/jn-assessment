@@ -65,4 +65,14 @@ export class CartPanel extends BasePage {
             console.warn('Failed to get cart count');
             return 0;
     }
+
+    async increaseItemQuantity(productIndex: number) {
+        if(!await this.isCartOpen()) {
+            await this.openCart();
+        }
+
+        const increaseQuantityButton = this.cartPanel.getByRole('button', { name: '+'}).nth(productIndex);
+        await expect(increaseQuantityButton).toBeVisible();
+        await increaseQuantityButton.click();
+    }
 }
