@@ -59,6 +59,7 @@ export function getProductsForSize(size: string): ProductData[] {
 export const TEST_CARTS = {
     SINGLE_ITEM: {
         product: EXPECTED_PRODUCTS[0],
+        quantity: 1,
         expectedSubtotal: 10.90
     },
     DOUBLE_QUANTITY: {
