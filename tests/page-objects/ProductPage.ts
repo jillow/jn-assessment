@@ -4,12 +4,14 @@ import { BasePage } from "./BasePage";
 export class ProductPage extends BasePage {
     readonly productCountText: Locator;
     readonly productNames: Locator;
+    readonly addToCartButtons: Locator;
 
     constructor(page: Page) {
         super(page);
 
         this.productCountText = page.locator('text=/\\d+ Product\\(s\\) found/');
         this.productNames = page.locator('h1, h2, h3, h4, h5, h6'); //find something better
+        this.addToCartButtons = page.locator('button:has-text("Add to cart")');
     }
 
     async goto(url: string): Promise<void> {
@@ -38,5 +40,11 @@ export class ProductPage extends BasePage {
         const priceLocator = this.page.locator(`text=/\\$\\s*${dollars}\\s*\\.\\s*${cents}/`);
 
         await expect(priceLocator.first()).toBeVisible();
+    }
+
+    async addProductToCartByIndex(index: number) {
+        const button = this.addToCartButtons.nth(index);
+        await expect(button).toBeVisible();
+        await button.click();
     }
 }
