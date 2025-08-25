@@ -12,14 +12,22 @@ export class CartPanel extends BasePage {
 
         this.cartPanel = this.page.locator('div:has(button:has-text("X")):has(*:has-text("Cart"))').last();
         this.subtotalPanel = this.cartPanel.locator('div:has(*:text-is("SUBTOTAL"))');
-        
+        this.openCartButton = this.page.locator('button:has([title="Products in cart quantity"])');
+        this.closeCartButton = this.page.getByRole('button', { name: 'X'});
     }
 
     async openCart(): Promise<void> {
         if(await this.isCartOpen()) {
             return;
         }
+
+        await this.openCartButton.click();
     }
+
+    async closeCart(): Promise<void> {
+        await this.closeCartButton.click();
+    }
+
     async isCartOpen(): Promise<boolean> {
         return await this.cartPanel.getByText('SUBTOTAL').isVisible();
     }
