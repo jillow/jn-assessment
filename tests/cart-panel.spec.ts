@@ -81,5 +81,40 @@ test.describe('Cart panel functionality', () => {
         await cartPanel.verifyProductInCart(cart.product.name);
         await cartPanel.verifyQuantityText(cart.quantity);
         await cartPanel.verifySubtotal(cart.expectedSubtotal);
-    })
+    });
+
+    test('should show empty cart alert when checkout clicked with no items', async({ page }) => {
+        let alertMessage = '';
+        page.on('dialog', async dialog => {
+            alertMessage = dialog.message();
+            await dialog.accept();
+        });
+
+        await cartPanel.proceedToCheckout();
+
+        if(alertMessage) {
+            expect(alertMessage).toContain('Add some product in the cart!');
+        }
+    });
+
+    test('should show subtotal alert when checkout clicked with items in cart', async({ page }) => {
+        const cart = TEST_CARTS.DOUBLE_ITEM_DOUBLE_QUANTITY;
+
+        let alertMessage = '';
+        page.on('dialog', async dialog => {
+            alertMessage = dialog.message();
+            await dialog.accept();
+        });
+
+        await productPage.addProductToCartByIndex(0);
+        await productPage.addProductToCartByIndex(0);
+        await productPage.addProductToCartByIndex(1);
+        await productPage.addProductToCartByIndex(1);
+        await cartPanel.proceedToCheckout();
+
+        if(alertMessage) {
+            const expectedSubtotalText = `${cart.expectedSubtotal.toFixed(2)}`;
+            expect(alertMessage).toContain(expectedSubtotalText);
+        }
+    });
 })
