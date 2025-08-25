@@ -55,3 +55,10 @@ export const EXPECTED_PRODUCTS: ProductData[] = [
 export function getProductsForSize(size: string): ProductData[] {
     return EXPECTED_PRODUCTS.filter(product => product.sizes.includes(size));
 }
+
+export const TEST_CARTS = {
+    SINGLE_ITEM: {
+        product: EXPECTED_PRODUCTS[0],
+        expectedSubtotal: 10.90
+    } as const
+}
