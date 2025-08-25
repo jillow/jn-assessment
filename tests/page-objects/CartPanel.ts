@@ -75,4 +75,13 @@ export class CartPanel extends BasePage {
         await expect(increaseQuantityButton).toBeVisible();
         await increaseQuantityButton.click();
     }
+
+    async getUniqueItemCount(): Promise<number> {
+        if(!await this.isCartOpen()) {
+            await this.openCart();
+        }
+
+        const removeButtons = this.cartPanel.getByRole('button', { name: 'remove product from cart' });
+        return await removeButtons.count();
+    }
 }
