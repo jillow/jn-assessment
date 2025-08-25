@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { TEST_CARTS } from './test-data/products';
+import { EXPECTED_PRODUCTS, TEST_CARTS } from './test-data/products';
 import { ProductPage } from './page-objects/ProductPage';
 import { CartPanel } from './page-objects/CartPanel';
 
@@ -47,5 +47,15 @@ test.describe('Cart panel functionality', () => {
         await cartPanel.verifySubtotal(cart.expectedSubtotal);
         const cartCount = await cartPanel.getCartItemCount();
         expect(cartCount).toBe(cart.quantity);
-    })
+    });
+
+    test('should handle adding multiple different items to cart correctly', async({ page }) => {
+        await productPage.addProductToCartByIndex(0);
+        await productPage.addProductToCartByIndex(1);
+
+        await cartPanel.verifyProductInCart(EXPECTED_PRODUCTS[0].name);
+        await cartPanel.verifyProductInCart(EXPECTED_PRODUCTS[1].name);
+        const productCount = await cartPanel.getUniqueItemCount();
+        expect(productCount).toBe(2);
+    });
 })
